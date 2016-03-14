@@ -1,0 +1,6 @@
+ ☐ cannot require core module: 
+   http://stackoverflow.com/questions/26603499/simple-solution-to-share-modules-loaded-via-npm-across-multiple-browserify-or-we
+
+
+ ☐ refactored core module, but still have problem of textAngular, need rangy-selectionrestore ... 
+ ☐ checkout stackoverflow post
