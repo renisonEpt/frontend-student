@@ -1,6 +1,16 @@
- ☐ cannot require core module: 
+ ✔ cannot require core module:  @done (16-04-10 18:39)
    http://stackoverflow.com/questions/26603499/simple-solution-to-share-modules-loaded-via-npm-across-multiple-browserify-or-we
+   solved by just importing src code of core
 
+ ✔ refactored core module, but still have problem of textAngular, need rangy-selectionrestore ...  @done (16-04-10 18:39)
+   version problem, used the latest version of textAngular, problem solved
 
- ☐ refactored core module, but still have problem of textAngular, need rangy-selectionrestore ... 
- ☐ checkout stackoverflow post
+ ✔ npm run dev not working bacause of lodash dependency issue. Was trying to install font-awesome. but overall getting category data loaded is ok. @done (16-04-10 18:40)
+   ```
+     rm -rf node_modules
+     npm install
+   ```
+ ☐ deserialize id
+ http://stackoverflow.com/questions/18753323/reference-existing-data-when-deserializing-java-objects
+
+ ☐ submit questions

@@ -7,6 +7,7 @@ import uirouter from 'angular-ui-router'; // by  default importing angular-ui-ro
 import routing from './app.config';
 import core from "renison-ept-frontend-core";
 import login from 'login';
-angular.module('app', [uirouter, core,login])
+import test from 'test';
+angular.module('app', [uirouter, core,login,test])
   .config(routing);
 
