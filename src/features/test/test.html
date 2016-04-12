@@ -29,7 +29,8 @@
         <div class="col-xs-8 text-center">
             <h3>
                 <i class="fa fa-clock-o"></i>
-                {{displayTime(timeLeft)}} &nbsp Left For {{categoryWorking}} &nbsp &nbsp
+                <timer countdown="timeLeft" interval="1000" finish-callback="onTimerFinished()" autostart="false"> {{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+                &nbsp Left For {{category.name}} &nbsp &nbsp
             </h3>
 
         </div>
