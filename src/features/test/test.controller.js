@@ -31,8 +31,7 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 
 	function init(){
 		BaseService.get("/proctor/timer").then(function(data){
-			console.log(data);
-			var timeLeft = data.timeLeft; //TODO refactor time left to be passed in data
+			console.log(timeLeft);
 			if(timeLeft > 0){
 				$scope.timeLeft = timeLeft;
 				return BaseService.get("/proctor/currentCategory");
@@ -69,6 +68,17 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 	function goToNext(){
 		
 	}
+
+	$scope.saveResponse = function (question) {
+		console.log(question);
+		BaseService.post("/proctor/question/" + question.id,question.response)
+			.then(function(){
+				question.isSaved = true;
+			})
+			.catch(function(response){
+				console.log(response);
+			});
+	};
 
 	$scope.onTimerFinished = function(){
 		//TODO
