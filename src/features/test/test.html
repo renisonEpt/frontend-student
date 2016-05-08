@@ -45,7 +45,8 @@
 
         <div class="col-sm-10 col-sm-offset-1">
             <h2>{{category.name}}</h2>
-            <ept-test-component ng-repeat="component in category.testComponents track by $index" component="component" component-num="$index +1" on-response-changed="saveResponse(component)"></ept-test-component>
+            <ept-test-component ng-repeat="component in category.testComponents track by $index" component="component" component-num="$index +1" on-response-changed="saveResponse(component)">
+            </ept-test-component>
 
             <div ng-show="isLastPage()" class="text-center">
                 <h3><strong>END OF EXAM</strong></h3>

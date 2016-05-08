@@ -3,6 +3,10 @@ import {TestServiceName} from "TestService";
 import ComponentType from "renison-ept-frontend-core/src/constants/component-type";
 import QuestionType from "renison-ept-frontend-core/src/constants/question-type";
 
+var ErrorCodes = {
+	testSubmitted:12
+};
+
 TestController.$inject  = ["$rootScope",'$scope', TestServiceName,"$stateParams", "$state","$q","localStorageService","BaseService","$cookies"];
 
 class Timer{
@@ -30,7 +34,7 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 	var timer = new Timer($scope);
 
 	function init(){
-		BaseService.get("/proctor/timer").then(function(data){
+		BaseService.get("/proctor/timer").then(function(timeLeft){
 			console.log(timeLeft);
 			if(timeLeft > 0){
 				$scope.timeLeft = timeLeft;
@@ -42,31 +46,47 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 			// if test ended then signal test ended
 			// if other error, try again
 			// if test hasn't started, go to next category
-			return BaseService.post("/proctor/nextCategory").then(function(data){
-				$scope.timeLeft = data.timeAllowed;
-				return data;
-			});
+			return toNextCategory();
 		}).then(function(data){
-			console.log(data);
-			$scope.category = data;
-			// TODO start continuously ping server for time
-			// set test loaded
-			displayTest();
+			displayTest(data);
 		}).catch(function(err){
 
 			console.log(err);
-			// switch, if test 
+			// if test is already submitted, go to end of test page
+			if(isTestSubmitted(err)){
+				goToEndOfTest();
+				return;
+			}
 			alert("a technical issue occured, please refresh the page and try again.");
 		});
 	}
-
-	function displayTest(){
+	function toNextCategory(){
+		return BaseService.post("/proctor/nextCategory").then(function(data){
+			if(!data){
+				// test has already ended
+				return null;
+			}
+			$scope.timeLeft = data.timeAllowed* 60;
+			return data;
+		});
+	}
+	// passing undefined or other falsy value will result redirection
+	// to test termination page
+	function displayTest(testData){
+		
 		$scope.loaded = true;
+		$scope.category = testData;
 		timer.start($scope.timeLeft);
 	}
 
-	function goToNext(){
-		
+	// determines from a response object whether a test is submitted
+	function isTestSubmitted(response){
+		return response.data.errorNumber == ErrorCodes.testSubmitted;
+	}
+
+	function goToEndOfTest(){
+		$state.go("testEnd");
+		return;
 	}
 
 	$scope.saveResponse = function (question) {
@@ -83,5 +103,23 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 	$scope.onTimerFinished = function(){
 		//TODO
 		console.log("timer finished");
+	}
+	$scope.next = function(){
+		var confirm = window.confirm("Students, please make sure that all questions are answered before preceeding");
+		if(!confirm){
+			return;
+		}
+		toNextCategory()
+			.then(function (testData){
+				displayTest(testData);
+			})
+			.catch(function(response){
+				if(isTestSubmitted(response)){
+					goToEndOfTest();
+					return;
+				}
+				alert("A technical issue occured. If problem persists, consider re-logging in");
+				console.log(response);
+			});
 	}
  }

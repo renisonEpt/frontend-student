@@ -48,7 +48,7 @@ export default function LoginController($rootScope,$scope, TestService,$statePar
     };
 
     $scope.expressLogin=function(){
-        $scope.login({"firstName":"asdfads","lastName":"test ","studentID":123,"dateOfBirth":"2003-03-12","gender":"MALE","email":"1231231@ccc.com","university":"University of Hong Kong","currentMajor":"hello","UWMajor":"","faculty":"","password":"1234"});
+        $scope.login({"firstName":"asdfads","lastName":"test ","studentId":123,"dateOfBirth":"2003-03-12","gender":"MALE","email":"1231231@ccc.com","university":"University of Hong Kong","currentMajor":"hello","UWMajor":"","faculty":"","password":"1234"});
     };
 
     $scope.recoverTest = function(){
