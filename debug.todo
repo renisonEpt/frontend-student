@@ -13,4 +13,5 @@
  ☐ deserialize id
  http://stackoverflow.com/questions/18753323/reference-existing-data-when-deserializing-java-objects
 
- ☐ submit questions
+ ✔ submit questions @done (16-05-30 20:47)
+ ☐ force to next category when timer finished
