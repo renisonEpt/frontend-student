@@ -52,6 +52,7 @@ export default function LoginController($rootScope,$scope, TestService,$statePar
     };
 
     $scope.recoverTest = function(){
+        throw new Error('cannot recover');
         var password = prompt("please enter your recovery code");
         if(password && password.length>=4){
             if(password.substring(password.length-3,password.length) == "ept"){

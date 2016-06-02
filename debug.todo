@@ -14,4 +14,15 @@
  http://stackoverflow.com/questions/18753323/reference-existing-data-when-deserializing-java-objects
 
  ✔ submit questions @done (16-05-30 20:47)
- ☐ force to next category when timer finished
+ ✔ force to next category when timer finished @done (16-06-01 21:18)
+ ✔ Remove previous button @done (16-06-01 21:24)
+ ✔ timer at bottom @done (16-06-01 21:24)
+ ☐ ignore index if test component
+ ☐ modal to alert message instead of alert
+ ☐ warning on timer being finished
+ ☐ error handling
+   ☐ test not available (not started, ended already)
+   ☐ category time passed
+   ☐ generic technical error
+ ☐ restore session
+ ☐ show total number of questions and completed

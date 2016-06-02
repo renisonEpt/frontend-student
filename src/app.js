@@ -8,6 +8,12 @@ import routing from './app.config';
 import core from "renison-ept-frontend-core";
 import login from 'login';
 import test from 'test';
-angular.module('app', [uirouter, core,login,test])
-  .config(routing);
-
+var app = angular.module('app', [uirouter, core,login,test])
+  .config(routing)
+  .factory('$exceptionHandler', function() {
+    return function(exception, cause) {
+      exception.message += ' (caused by "' + cause + '")';
+      console.log('I caught exception', exception.message);
+      throw exception;
+    };
+  });

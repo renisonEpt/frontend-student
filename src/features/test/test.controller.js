@@ -50,7 +50,6 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 		}).then(function(data){
 			displayTest(data);
 		}).catch(function(err){
-
 			console.log(err);
 			// if test is already submitted, go to end of test page
 			if(isTestSubmitted(err)){
@@ -73,7 +72,6 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 	// passing undefined or other falsy value will result redirection
 	// to test termination page
 	function displayTest(testData){
-		
 		$scope.loaded = true;
 		$scope.category = testData;
 		timer.start($scope.timeLeft);
@@ -101,13 +99,14 @@ export default function TestController($rootScope,$scope, TestService,$statePara
 	};
 
 	$scope.onTimerFinished = function(){
-		//TODO
-		console.log("timer finished");
-	}
-	$scope.next = function(){
-		var confirm = window.confirm("Students, please make sure that all questions are answered before preceeding");
-		if(!confirm){
-			return;
+		$scope.next(true);
+	};
+	$scope.next = function(ignoreConfirm){
+		if(!ignoreConfirm){
+			var confirm = window.confirm("Students, please make sure that all questions are answered before preceeding");
+			if(!confirm){
+				return;
+			}
 		}
 		toNextCategory()
 			.then(function (testData){

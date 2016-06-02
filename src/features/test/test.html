@@ -21,10 +21,6 @@
 <div class="container" ng-controller="TestController" ng-show="loaded">
     <div class="row">
         <div class="col-xs-2">
-            <button class="btn btn-lg" ng-click="prev()"><span
-                    class="fa fa-chevron-left"></span>
-                    Previous
-            </button>
         </div>
         <div class="col-xs-8 text-center">
             <h3>
@@ -61,15 +57,12 @@
     </div>
     <div class="row">
         <div class="col-xs-2">
-            <button class="btn btn-lg" ng-click="prev()"><span
-                    class="fa fa-chevron-left"></span>
-                Previous
-            </button>
         </div>
         <div class="col-xs-8 text-center">
             <h3>
                 <i class="fa fa-clock-o"></i>
-                {{displayTime(timeLeft)}} &nbsp Left For {{categoryWorking}} &nbsp &nbsp
+                <timer countdown="timeLeft" interval="1000" finish-callback="onTimerFinished()" autostart="false"> {{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+                &nbsp Left For {{category.name}} &nbsp &nbsp
             </h3>
 
         </div>
