@@ -221,7 +221,7 @@ module.exports = function makeWebpackConfig(options) {
         inject: 'body',
         minify: {
           // see https://github.com/kangax/html-minifier#options-quick-reference
-          minifyJS: BUILD,
+          // minifyJS: BUILD,
           minifyCSS: BUILD,
           removeCommentsFromCDATA: BUILD,
           removeComments: BUILD
@@ -239,11 +239,11 @@ module.exports = function makeWebpackConfig(options) {
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#dedupeplugin
       // Dedupe modules in the output
-      new webpack.optimize.DedupePlugin(),
+      new webpack.optimize.DedupePlugin()
 
       // Reference: http://webpack.github.io/docs/list-of-plugins.html#uglifyjsplugin
       // Minify all javascript, switch loaders to minimizing mode
-      new webpack.optimize.UglifyJsPlugin()
+      // new webpack.optimize.UglifyJsPlugin()
     )
   }
 
