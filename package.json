@@ -34,6 +34,7 @@
     "font-awesome-webpack": "0.0.4",
     "html-webpack-plugin": "^1.5.2",
     "humanize-duration": "^3.7.0",
+    "jquery": "^2.2.4",
     "lesshat": "^3.0.2",
     "lodash": "^4.9.0",
     "moment": "^2.12.0",

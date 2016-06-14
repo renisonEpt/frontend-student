@@ -17,9 +17,9 @@
  ✔ force to next category when timer finished @done (16-06-01 21:18)
  ✔ Remove previous button @done (16-06-01 21:24)
  ✔ timer at bottom @done (16-06-01 21:24)
- ☐ ignore index if test component
- ☐ modal to alert message instead of alert
- ☐ warning on timer being finished
+ ✔ ignore index if test component @done (16-06-13 23:40)
+ ✔ modal to alert message instead of alert @done (16-06-13 21:57)
+ ✔ warning on timer being finished @done (16-06-13 21:19)
  ☐ error handling
    ☐ test not available (not started, ended already)
    ☐ category time passed

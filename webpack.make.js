@@ -98,13 +98,13 @@ module.exports = function makeWebpackConfig(options) {
     }, {
       //less loader
       test: /\.less$/,
-      loader: "style!css!less"
+      loader: 'style!css!less'
     }, {
       test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: "url-loader?limit=10000&mimetype=application/font-woff"
+      loader: 'url-loader?limit=10000&mimetype=application/font-woff'
     }, {
       test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-      loader: "file-loader"
+      loader: 'file-loader'
     }, {
       // ASSET LOADER
       // Reference: https://github.com/webpack/file-loader
@@ -177,7 +177,7 @@ module.exports = function makeWebpackConfig(options) {
   ];
   // suppoting bower components https://webpack.github.io/docs/usage-with-bower.html
   config.resolve = {
-    // root: [path.join(__dirname, "bower_components")]
+    // root: [path.join(__dirname, 'bower_components')]
     // attempt to avoid relative path when importing, but failed
     root: [
       path.resolve(__dirname, './src/'),
@@ -203,11 +203,16 @@ module.exports = function makeWebpackConfig(options) {
     // Disabled when in test mode or not in build mode
     new ExtractTextPlugin('[name].[hash].css', {
       disable: !BUILD || TEST
+    }),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery'
     })
     // for support bower only
     // ,
     // new webpack.ResolverPlugin(
-    //   new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin(".bower.json", ["main"])
+    //   new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('.bower.json', ['main'])
     // )
   ];
 
