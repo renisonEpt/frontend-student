@@ -2,6 +2,7 @@
 import ComponentType from 'renison-ept-frontend-core/src/constants/component-type';
 import QuestionType from 'renison-ept-frontend-core/src/constants/question-type';
 import _ from 'lodash';
+require('./test.less');
 var ErrorCodes = {
 	testSubmitted:12
 };
@@ -40,11 +41,13 @@ class Timer{
 export default function TestController($rootScope,$scope, 
 	$stateParams,$state,$q,localStorageService,
 	BaseService,$cookies,BaseToastService,BaseModalService) {
-	init();
 	$scope.loaded = false;
 	$scope.timeLeft = 100;
 	var timer = new Timer($scope);
-
+	$scope.questionProgress = {
+		numDone:0,
+		numTotal:0
+	};
 	timer.setOnTick(function(timeLeft){
 		if(timeLeft === 60){
 			BaseToastService.warn('You have about 1 min left. ' + 
@@ -61,28 +64,25 @@ export default function TestController($rootScope,$scope,
 				});
 		}
 	});
-	function init(){
-		// getting data
-		BaseService.get('/proctor/timer').then(function(timeLeft){
-			console.log(timeLeft);
-			if(timeLeft > 0){
-				$scope.timeLeft = timeLeft;
-				// get current category
-				return BaseService.get('/proctor/currentCategory');
-			}
-			// the catch block will execute
-			throw new Error('Timer is done, automatically fetch next category');
-		}).then(function(data){
-			displayTest(data);
-		}).catch(function(err){
-			console.log(err);
-			// if test ended then signal test ended
-			// if other error, try again
-			// if test hasn't started, go to next category
-			return displayNextCategory();
-		})
-
-	}
+	// getting data
+	BaseService.get('/proctor/timer').then(function(timeLeft){
+		console.log(timeLeft);
+		if(timeLeft > 0){
+			$scope.timeLeft = timeLeft;
+			// get current category
+			return BaseService.get('/proctor/currentCategory');
+		}
+		// the catch block will execute
+		throw new Error('Timer is done, automatically fetch next category');
+	}).then(function(data){
+		displayTest(data);
+	}).catch(function(err){
+		console.log(err);
+		// if test ended then signal test ended
+		// if other error, try again
+		// if test hasn't started, go to next category
+		return displayNextCategory();
+	});
 	function displayNextCategory(){
 		return BaseService.post('/proctor/nextCategory')
 			.then(function(data){
@@ -125,6 +125,7 @@ export default function TestController($rootScope,$scope,
 			questionIndex++;
 		}
 		$scope.category = testData;
+		updateQuestionProgress();
 		timer.start($scope.timeLeft);
 	}
 
@@ -143,6 +144,7 @@ export default function TestController($rootScope,$scope,
 			.then(function(){
 				question.isSaved = true;
 			})
+			.then(updateQuestionProgress)
 			.catch(function(response){
 				console.log(response);
 			});
@@ -160,5 +162,21 @@ export default function TestController($rootScope,$scope,
 			}
 		}
 		displayNextCategory();
+	}
+
+	function updateQuestionProgress(){
+		var numDone = 0;
+		var numTotal = 0;
+		_.forEach($scope.category.testComponents,function(t){
+			if(t.type !== ComponentType.COMP_HTML){
+				// must be a question
+				numTotal++;
+				if(t.isSaved){
+					numDone ++;
+				}
+			}
+		});
+		$scope.questionProgress.numDone = numDone;
+		$scope.questionProgress.numTotal = numTotal;
 	}
  }

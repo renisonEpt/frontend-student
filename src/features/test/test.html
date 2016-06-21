@@ -18,32 +18,34 @@
     &lt;!&ndash;Src will be dynamic in the future&ndash;&gt;
     <video src="media/primo.mp4" class="video-display" controls autostart="false"></video>
 </div>-->
-<div class="container" ng-controller="TestController" ng-show="loaded">
-    <div class="row">
-        <div class="col-xs-2">
-        </div>
-        <div class="col-xs-8 text-center">
-            <h3>
-                <i class="fa fa-clock-o"></i>
-                <timer countdown="timeLeft" interval="1000" finish-callback="onTimerFinished()" autostart="false"> {{hhours}}:{{mminutes}}:{{sseconds}}</timer>
-                &nbsp Left For {{category.name}} &nbsp &nbsp
-            </h3>
-
-        </div>
-        <div class="col-xs-2">
-            <button class="btn btn-lg" ng-click="next()"><span
-                    class="fa fa-chevron-right"></span>
-                    Next &nbsp; &nbsp; &nbsp; &nbsp;
-            </button>
+<div class="test-page" ng-controller="TestController" ng-show="loaded">
+    <div class="timer-bar">
+        <div class="row">
+            <div class="col-xs-2">
+            </div>
+            <div class="col-xs-8 text-center">
+                <h3>
+                    <i class="fa fa-clock-o"></i>
+                    <timer countdown="timeLeft" interval="1000" finish-callback="onTimerFinished()" autostart="false"> {{hhours}}:{{mminutes}}:{{sseconds}}</timer>
+                    Left for {{category.name}} &nbsp &nbsp
+                    <small>{{questionProgress.numDone}}/{{questionProgress.numTotal+''}} Done</small>
+                </h3>
+            </div>
+            <div class="col-xs-2">
+                <button class="btn btn-lg" ng-click="next()"><span
+                        class="fa fa-chevron-right"></span>
+                        Next &nbsp; &nbsp; &nbsp; &nbsp;
+                </button>
+            </div>
         </div>
     </div>
-    <div class="row" id="top">
-
+<div class="container">
+    <div class="row test-content" id="top">
         <div class="col-sm-10 col-sm-offset-1">
             <h2>{{category.name}}</h2>
             <ept-test-component ng-repeat="component in category.testComponents | orderBy:'ordering'" component="component" component-num="component.questionIndex" on-response-changed="saveResponse(component)">
             </ept-test-component>
-
+    
             <div ng-show="isLastPage()" class="text-center">
                 <h3><strong>END OF EXAM</strong></h3>
                 <h4>Please make sure you check all your answers and leave no blank for Multiple Choice and Short Answer questions.
@@ -53,18 +55,7 @@
              </div>
              <span>{{message}}</span>
         </div>
-
+    
     </div>
-    <div class="row">
-        <div class="col-xs-2">
-        </div>
-        <div class="col-xs-8 text-center">
-        </div>
-        <div class="col-xs-2">
-            <button class="btn btn-lg" ng-click="next()">
-            <span class="fa fa-chevron-right"></span>
-                Next &nbsp; &nbsp;&nbsp; &nbsp;
-            </button>
-        </div>
-    </div>
+</div>
 </div>

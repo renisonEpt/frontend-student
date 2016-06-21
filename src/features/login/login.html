@@ -1,118 +1,125 @@
-<div class="container" ng-controller="LoginController">
-    <h1 align="center" class="title">UW English Proficiency Test</h1>
-    <p align = "center"> To start, please fill out the information</p>
-    <div class="row">
-        <div class="span12">
-            <form ng-submit="login()" class="form-horizontal ept-login" role="form">
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">First Name </label>
-                    <div class="col-sm-3">
-                        <input type="text" ng-model="user.firstName" required class="form-control"
-                               placeholder="Thomas">
+<div ng-controller="LoginController">
+    <div ng-show="loginStaging" class="login-staging">
+        <ept-loading-bar class="'color-white'"></ept-loading-bar>
+        <h3 class="explanation title">One moment, your instructor is setting up the exam.</h3>
+        <p class="explanation detail">You entered something wrong in your login form? You can <a ng-click='resetLogin()'>go back</a></p>
+    </div>
+    <div ng-show = "!loginStaging" class="container">
+        <h1 align="center" class="title">UW English Proficiency Test</h1>
+        <p align="center"> To start, please fill out the information</p>
+        <div class="row">
+            <div class="span12">
+                <form ng-submit="login()" class="form-horizontal ept-login" role="form">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">First Name </label>
+                        <div class="col-sm-3">
+                            <input type="text" ng-model="user.firstName" required class="form-control"
+                                   placeholder="Thomas">
+                        </div>
                     </div>
-                </div>
-
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Last Name </label>
-
-                    <div class="col-sm-3">
-                        <input type="text" ng-model="user.lastName" required class="form-control"
-                               placeholder="Zhang">
+        
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Last Name </label>
+        
+                        <div class="col-sm-3">
+                            <input type="text" ng-model="user.lastName" required class="form-control"
+                                   placeholder="Zhang">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">studentId</label>
-                    <div class="col-sm-3">
-                        <input type="number" ng-model="user.studentId" required class="form-control" placeholder="id" integer>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">studentId</label>
+                        <div class="col-sm-3">
+                            <input type="number" ng-model="user.studentId" required class="form-control" placeholder="id" integer>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Date of Birth: </label>
-                    <div class="col-sm-3">
-                        <input type="date" ng-model="user.dateOfBirth" required class="form-control">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Date of Birth: </label>
+                        <div class="col-sm-3">
+                            <input type="date" ng-model="user.dateOfBirth" required class="form-control">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Gender</label>
-
-                    <div class="col-sm-3">
-                        <!-- drop down menu required -->
-                        <!--sex-->
-                        <select ng-model='user.gender' class="form-control" required>
-                            <option value="FEMALE"> Female</option>
-                            <option value="MALE"> Male</option>
-                        </select>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Gender</label>
+        
+                        <div class="col-sm-3">
+                            <!-- drop down menu required -->
+                            <!--sex-->
+                            <select ng-model='user.gender' class="form-control" required>
+                                <option value="FEMALE"> Female</option>
+                                <option value="MALE"> Male</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Email</label>
-                    <div class="col-sm-3">
-                        <input type="email" ng-model="user.email" required class="form-control" placeholder="email">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Email</label>
+                        <div class="col-sm-3">
+                            <input type="email" ng-model="user.email" required class="form-control" placeholder="email">
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">University</label>
-
-                    <div class="col-sm-3">
-                        <!-- drop down menu required -->
-                        <!-- university -->
-                        <select ng-model='user.university' class="form-control" required>
-                            <option value="University of Hong Kong"> University of Hong Kong</option>
-                            <option value="Fudan University"> Fudan university</option>
-                            <option value="Beijing Institute of Technology"> Beijing Institute of Technology</option>
-                            <option value="Tianjin University"> Tianjin University</option>
-                            <option value="Beijing JiaoTong University"> Beijing JiaoTong University</option>
-                            <option value="Xiamen University"> Xiamen University</option>
-                        </select>
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">University</label>
+        
+                        <div class="col-sm-3">
+                            <!-- drop down menu required -->
+                            <!-- university -->
+                            <select ng-model='user.university' class="form-control" required>
+                                <option value="University of Hong Kong"> University of Hong Kong</option>
+                                <option value="Fudan University"> Fudan university</option>
+                                <option value="Beijing Institute of Technology"> Beijing Institute of Technology</option>
+                                <option value="Tianjin University"> Tianjin University</option>
+                                <option value="Beijing JiaoTong University"> Beijing JiaoTong University</option>
+                                <option value="Xiamen University"> Xiamen University</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Current Major</label>
-
-                    <div class="col-sm-3">
-                        <input type="text" ng-model="user.currentMajor" required class="form-control"
-                               placeholder="current major">
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Current Major</label>
+        
+                        <div class="col-sm-3">
+                            <input type="text" ng-model="user.currentMajor" required class="form-control"
+                                   placeholder="current major">
+                        </div>
                     </div>
-                </div>
-                <!-- <div class="form-group">
-                    <label class="col-sm-5 control-label">Major at UW</label>
-                
-                    <div class="col-sm-3">
-                        <input type="text" ng-model="user.UWMajor" required class="form-control" placeholder="major at uw">
+                    <!-- <div class="form-group">
+                        <label class="col-sm-5 control-label">Major at UW</label>
+                    
+                        <div class="col-sm-3">
+                            <input type="text" ng-model="user.UWMajor" required class="form-control" placeholder="major at uw">
+                        </div>
+                    </div> -->
+                    <!-- <div class="form-group">
+                        <label class="col-sm-5 control-label">Faculty at UW</label>
+        
+                        <div class="col-sm-3">
+                            Faculty at UWaterloo:
+                            <select ng-model='user.faculty' class="form-control" required>
+                                <option value="Engineering"> Engineering</option>
+                                <option value="Mathematics"> Mathematics</option>
+                                <option value="Arts"> Arts</option>
+                                <option value="Applied Health Sciences"> Applied Health Sciences</option>
+                                <option value="Environment"> Environment</option>
+                                <option value="Science"> Science</option>
+                            </select>
+                        </div>
+                    l</div> -->
+                    <div class="form-group">
+                        <label class="col-sm-5 control-label">Password</label>
+        
+                        <div class="col-sm-3">
+                            <input type="password" ng-model="user.password" class="form-control" placeholder="password">
+                        </div>
                     </div>
-                </div> -->
-                <!-- <div class="form-group">
-                    <label class="col-sm-5 control-label">Faculty at UW</label>
-
-                    <div class="col-sm-3">
-                        Faculty at UWaterloo:
-                        <select ng-model='user.faculty' class="form-control" required>
-                            <option value="Engineering"> Engineering</option>
-                            <option value="Mathematics"> Mathematics</option>
-                            <option value="Arts"> Arts</option>
-                            <option value="Applied Health Sciences"> Applied Health Sciences</option>
-                            <option value="Environment"> Environment</option>
-                            <option value="Science"> Science</option>
-                        </select>
+                    <div class="form-group">
+                        <div style="text-align: center" class="col-sm-12">
+                            <button type="submit" ng-disabled="!loaded" class="btn btn-success" value="login">Submit</button>
+                            <button type="button"  class="btn btn-danger" ng-click="expressLogin()">DEBUG LOGIN</button>
+                            <button type="button" ng-disabled="!loaded" class="btn btn-warning" ng-click="recoverTest()">Recover Test</button>
+                        </div>
                     </div>
-                l</div> -->
-                <div class="form-group">
-                    <label class="col-sm-5 control-label">Password</label>
-
-                    <div class="col-sm-3">
-                        <input type="password" ng-model="user.password" class="form-control" placeholder="password">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div style="text-align: center" class="col-sm-12">
-                        <button type="submit" ng-disabled="!loaded" class="btn btn-success" value="login">Submit</button>
-                        <button type="button"  class="btn btn-danger" ng-click="expressLogin()">DEBUG LOGIN</button>
-                        <button type="button" ng-disabled="!loaded" class="btn btn-warning" ng-click="recoverTest()">Recover Test</button>
-                    </div>
-                </div>
-                <!--<span>Please use either submit or debug login to test this project.
-        the password is 1234</span>-->
-            </form>
+                    <!--<span>Please use either submit or debug login to test this project.
+            the password is 1234</span>-->
+                </form>
+            </div>
         </div>
     </div>
 </div>
