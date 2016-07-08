@@ -14,7 +14,8 @@ module.exports = function makeWebpackConfig(options) {
    */
   var BUILD = !!options.BUILD;
   var TEST = !!options.TEST;
-
+  var PROD = !!options.PROD; // use prod url
+  var HEROKU = !!options.HEROKU;
   /**
    * Config
    * Reference: http://webpack.github.io/docs/configuration.html
@@ -208,12 +209,13 @@ module.exports = function makeWebpackConfig(options) {
       $: 'jquery',
       jQuery: 'jquery',
       'window.jQuery': 'jquery'
-    })
+    }),
     // for support bower only
     // ,
     // new webpack.ResolverPlugin(
     //   new webpack.ResolverPlugin.DirectoryDescriptionFilePlugin('.bower.json', ['main'])
     // )
+    new webpack.EnvironmentPlugin(['base_url'])
   ];
 
   // Skip rendering index.html in test mode

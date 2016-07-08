@@ -168,7 +168,7 @@ export default function TestController($rootScope,$scope,
 		var numDone = 0;
 		var numTotal = 0;
 		_.forEach($scope.category.testComponents,function(t){
-			if(t.type !== ComponentType.COMP_HTML){
+			if(t.componentType !== ComponentType.COMP_HTML){
 				// must be a question
 				numTotal++;
 				if(t.isSaved){

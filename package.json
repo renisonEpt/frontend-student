@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "description": "Student portal for EPT. Where test takes place.",
   "scripts": {
-    "build": "webpack --config webpack.build.js --bail ",
-    "dev": "node node_modules/.bin/webpack-dev-server --history-api-fallback --hot --inline --progress --port=8081",
+    "build": "base_url='http://localhost:8080' webpack --config webpack.build.js --bail --define base_url='http://localhost:8080'",
+    "build-prod": "webpack --config webpack.build.heroku.js --bail --define base_url='http://10.10.10.1:8888'",
+    "dev": " node node_modules/.bin/webpack-dev-server --history-api-fallback --define base_url='http://localhost:8080' --hot --inline --progress --port=8081",
     "test": "karma start",
     "test:live": "karma start --auto-watch --no-single-run"
   },
