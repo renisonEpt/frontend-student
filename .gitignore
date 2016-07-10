@@ -6,3 +6,4 @@ build
 .classpath
 .project
 npm-debug.log
+nohup.out
