@@ -38,11 +38,18 @@
                 </button>
             </div>
         </div>
+        <div class="row text-center">
+            <label class="progress-label">Progress: </label>
+            <ul class="list-unstyled category-progress">
+                <li ng-repeat="cateName in category.allCategories" class="progress-item" ng-class="{'active':cateName==category.name}">
+                    {{cateName}}
+                </li>
+            </ul>
+        </div>
     </div>
 <div class="container">
     <div class="row test-content" id="top">
         <div class="col-sm-10 col-sm-offset-1">
-            <h2>{{category.name}}</h2>
             <ept-test-component ng-repeat="component in category.testComponents | orderBy:'ordering'" component="component" component-num="component.questionIndex" on-response-changed="saveResponse(component)">
             </ept-test-component>
     

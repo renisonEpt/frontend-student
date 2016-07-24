@@ -6,8 +6,28 @@
 		z-index: 1000;
 		border-bottom: 1px solid rgba(0, 0, 0, 0.5);
 		width: 100%;
+		height: 105px;
+		.progress-label{
+			display:inline-block;
+			color:grey;
+		}
+		.category-progress{
+			text-align: center;
+			display:inline-block;
+			.progress-item{
+				font-size: 18px;
+				display: inline-block;
+				margin: 0px 5px;
+				padding:5px;
+				&.active{
+					background-color: #1F1E52;
+					border-radius: 3px;
+					color:white;
+				}
+			}
+		}
 	}
 	.test-content{
-		margin-top:0;
+		margin-top:105px;
 	}
 }

@@ -3,10 +3,11 @@ require('./login.less');
 LoginController.$inject  = ['$rootScope','$scope',
     '$stateParams', '$state','$q','localStorageService',
     'BaseService','$cookies','BaseModalService','BaseToastService','$interval'];
-
+var LOGIN_ATTEMPT_INTERVAL = 5000; // send login attempt every 5 seconds
 export default function LoginController($rootScope,$scope, 
     $stateParams,$state,$q,localStorageService,
     BaseService,$cookies,BaseModalService,BaseToastService,$interval) {
+
     $scope.user = {
         firstName:'',
         lastName:'',
@@ -57,7 +58,7 @@ export default function LoginController($rootScope,$scope,
                 cancelPolling();
                 $state.go('test');
             });
-        },1000);
+        },LOGIN_ATTEMPT_INTERVAL);
     };
     $scope.resetLogin = function(){
         cancelPolling();
