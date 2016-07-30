@@ -114,6 +114,7 @@ export default function TestController($rootScope,$scope,
 		}
 		$scope.loaded = true;
 		var questionIndex = 1;
+		// todo refactor in the backend
 		testData.testComponents = _.sortBy(testData.testComponents,'ordering');
 		console.log(testData);
 		// a paragraph should be count towards question index

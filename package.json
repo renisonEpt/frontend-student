@@ -4,7 +4,7 @@
   "description": "Student portal for EPT. Where test takes place.",
   "scripts": {
     "build": "base_url='http://localhost:8080' webpack --config webpack.build.js --bail --define base_url='http://localhost:8080'",
-    "build-prod": "base_url='http://10.10.10.1:8080' webpack --config webpack.build.js --bail",
+    "build-prod": "base_url='http://10.10.10.50:8080' webpack --config webpack.build.js --bail",
     "dev": "base_url='http://localhost:8080' node node_modules/.bin/webpack-dev-server --history-api-fallback --hot --inline --progress --port=8081",
     "test": "karma start",
     "test:live": "karma start --auto-watch --no-single-run"
