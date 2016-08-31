@@ -119,7 +119,7 @@ export default function TestController($rootScope,$scope,
 		console.log(testData);
 		// a paragraph should be count towards question index
 		for (var i=0;i<testData.testComponents.length;i++){
-			if(testData.testComponents[i].componentType === ComponentType.COMP_HTML){
+			if(!ComponentType.isQuestionType(testData.testComponents[i].componentType)){
 				continue;
 			}
 			testData.testComponents[i]['questionIndex'] = questionIndex;
