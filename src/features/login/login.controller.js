@@ -63,6 +63,7 @@ export default function LoginController($rootScope,$scope,
     $scope.resetLogin = function(){
         cancelPolling();
         $scope.loginStaging = false;
+        $scope.loaded=true;
     };
     $scope.expressLogin=function(){
         $scope.login({'firstName':'asdfads','lastName':'test ','studentId':123,'dateOfBirth':'2003-03-12','gender':'MALE','email':'1231231@ccc.com','university':'University of Hong Kong','currentMajor':'hello','UWMajor':'','faculty':'','password':'1234'});

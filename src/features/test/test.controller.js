@@ -1,6 +1,7 @@
 
-import ComponentType from 'renison-ept-frontend-core/src/constants/component-type';
-import QuestionType from 'renison-ept-frontend-core/src/constants/question-type';
+// 
+var ComponentType = require('renison-ept-frontend-core/src/constants/component-type');
+var QuestionType = require('renison-ept-frontend-core/src/constants/question-type');
 import _ from 'lodash';
 require('./test.less');
 var ErrorCodes = {
@@ -41,26 +42,29 @@ class Timer{
 export default function TestController($rootScope,$scope, 
 	$stateParams,$state,$q,localStorageService,
 	BaseService,$cookies,BaseToastService,BaseModalService) {
+	var timer = new Timer($scope);
+	var warningReminderTime = 10; // warn on 10min left
+	var endingReminderTime = 1; // warn the ending on 1 min left
 	$scope.loaded = false;
 	$scope.timeLeft = 100;
-	var timer = new Timer($scope);
 	$scope.questionProgress = {
 		numDone:0,
 		numTotal:0
 	};
+	$scope.category = null;
 	timer.setOnTick(function(timeLeft){
-		if(timeLeft === 60){
-			BaseToastService.warn('You have about 1 min left. ' + 
+		if(timeLeft === warningReminderTime * 60){
+			BaseToastService.warn('You have about '+ warningReminderTime+' min left. ' + 
 				'Do not leave anything blank.'+
 				'You will start the next ' + 
 				'category once this one finishes.', 
-				'1 minute left',{
-					timeOut:'10000'
+				warningReminderTime + ' minute left',{
+					timeOut:'10000' // message appears for 10 seconds
 				});
-		}else if(timeLeft == 10){
-			BaseToastService.warn('Your current category will end in 10 seconds.',
+		}else if(timeLeft == endingReminderTime * 60){
+			BaseToastService.warn('Your current category will end in '+endingReminderTime+' min.',
 				'Category ending soon',{
-					timeOut:'8000'
+					timeOut:'8000' // message appears for 8 seconds
 				});
 		}
 	});
@@ -99,10 +103,8 @@ export default function TestController($rootScope,$scope,
 					goToEndOfTest();
 					return;
 				}
-				BaseModalService.errorAlert('A technical issue occured. If problem persists, consider re-logging in')
-					.then(function(){
-						$state.go('login');
-					});
+				BaseModalService
+					.errorAlert('A technical issue occured. If problem persists, consider re-logging in');
 				console.log(response);
 			});
 	}
@@ -116,10 +118,15 @@ export default function TestController($rootScope,$scope,
 		var questionIndex = 1;
 		// todo refactor in the backend
 		testData.testComponents = _.sortBy(testData.testComponents,'ordering');
-		console.log(testData);
 		// a paragraph should be count towards question index
 		for (var i=0;i<testData.testComponents.length;i++){
 			if(!ComponentType.isQuestionType(testData.testComponents[i].componentType)){
+				if(testData.testComponents[i].componentType === ComponentType.COMP_VIDEO){
+					// add base url to video src url
+					// we must go to http://myserver-address:8080/VIDEO_SRC_NAME, instead of 
+					// localhost:8888/VIDEO_SRC_NAME
+					testData.testComponents[i].content = BaseService.BASE_URL + testData.testComponents[i].content;
+				}
 				continue;
 			}
 			testData.testComponents[i]['questionIndex'] = questionIndex;
@@ -139,37 +146,57 @@ export default function TestController($rootScope,$scope,
 		$state.go('testEnd');
 		return;
 	}
+	// save answers to questions
 	$scope.saveResponse = function (question) {
-		console.log(question);
 		BaseService.post('/proctor/question/' + question.id,question.response)
 			.then(function(){
 				question.isSaved = true;
 			})
 			.then(updateQuestionProgress)
-			.catch(function(response){
-				console.log(response);
-			});
+			.catch(showErrorMsg);
 	};
 
 	$scope.onTimerFinished = function(){
 		$scope.next(true);
 	};
 
+	function getNumUnanswered(){
+		return $scope.questionProgress.numTotal - $scope.questionProgress.numDone;
+	}
+	function getUnansweredWarning(){
+		var numUnanswered = getNumUnanswered();
+		if(numUnanswered>0){
+			return 'You have ' + numUnanswered + ' questions left blank.';
+		}else{
+			return '';
+		}
+	}
+
 	$scope.next = function(ignoreConfirm){
 		if(!ignoreConfirm){
-			var confirm = window.confirm('Students, please make sure that all questions are answered before preceeding');
+			var confirmMessage = getUnansweredWarning() + ' You would not be able to make changes to answered questions, are you sure?';
+			var confirm = window.confirm(confirmMessage);
 			if(!confirm){
 				return;
 			}
 		}
 		displayNextCategory();
 	}
+	$scope.isLastCategory = function(){
+		return $scope.category && $scope.category.name === 
+			$scope.category.allCategories[$scope.category.allCategories.length-1];
+	};
+
+	$scope.getNextButtonText = function(){
+		var isLastCategory = $scope.isLastCategory();
+		return isLastCategory?'Finish Test':'Next';
+	};
 
 	function updateQuestionProgress(){
 		var numDone = 0;
 		var numTotal = 0;
 		_.forEach($scope.category.testComponents,function(t){
-			if(t.componentType !== ComponentType.COMP_HTML){
+			if(ComponentType.isQuestionType(t.componentType)){
 				// must be a question
 				numTotal++;
 				if(t.isSaved){
@@ -179,5 +206,14 @@ export default function TestController($rootScope,$scope,
 		});
 		$scope.questionProgress.numDone = numDone;
 		$scope.questionProgress.numTotal = numTotal;
+	}
+
+	function showErrorMsg(response){
+		var errorMsg = 'Oops, a technical just occurred.'
+		if(response && response.data && response.data.errorMessage){
+			errorMsg = response.data.errorMessage;
+		}
+		console.log(response);
+		BaseToastService.error(errorMsg);
 	}
  }
