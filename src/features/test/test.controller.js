@@ -59,12 +59,12 @@ export default function TestController($rootScope,$scope,
 				'You will start the next ' + 
 				'category once this one finishes.', 
 				warningReminderTime + ' minute left',{
-					timeOut:'10000' // message appears for 10 seconds
+					timeOut:'15000' // how long message appears, in miliseconds
 				});
 		}else if(timeLeft == endingReminderTime * 60){
 			BaseToastService.warn('Your current category will end in '+endingReminderTime+' min.',
 				'Category ending soon',{
-					timeOut:'8000' // message appears for 8 seconds
+					timeOut:'15000' 
 				});
 		}
 	});
@@ -108,6 +108,9 @@ export default function TestController($rootScope,$scope,
 				console.log(response);
 			});
 	}
+	function scrollToTop(){
+		window.scrollTo(0,0);
+	}
 	// passing undefined or other falsy value will result redirection
 	// to test termination page
 	function displayTest(testData){
@@ -116,7 +119,7 @@ export default function TestController($rootScope,$scope,
 		}
 		$scope.loaded = true;
 		var questionIndex = 1;
-		// todo refactor in the backend
+		// todo refactor to the backend
 		testData.testComponents = _.sortBy(testData.testComponents,'ordering');
 		// a paragraph should be count towards question index
 		for (var i=0;i<testData.testComponents.length;i++){
@@ -135,6 +138,7 @@ export default function TestController($rootScope,$scope,
 		$scope.category = testData;
 		updateQuestionProgress();
 		timer.start($scope.timeLeft);
+		scrollToTop();
 	}
 
 	// determines from a response object whether a test is submitted
@@ -174,13 +178,16 @@ export default function TestController($rootScope,$scope,
 
 	$scope.next = function(ignoreConfirm){
 		if(!ignoreConfirm){
-			var confirmMessage = getUnansweredWarning() + ' You would not be able to make changes to answered questions, are you sure?';
-			var confirm = window.confirm(confirmMessage);
-			if(!confirm){
-				return;
-			}
+			var confirmMessage = getUnansweredWarning() + ' When you leave this section, you will not be able to return. \nSelect OK to continue to the next section. Select Cancel to stay in this section.';
+			var modalOptions = {
+				modalTitle: 'Moving on...',
+				modalBody: '<p>'+confirmMessage+'</p>'
+			};
+			BaseModalService.confirm(modalOptions)
+				.then(function(confirmResult){
+					if(confirmResult) displayNextCategory();
+				});
 		}
-		displayNextCategory();
 	}
 	$scope.isLastCategory = function(){
 		return $scope.category && $scope.category.name === 
@@ -192,6 +199,11 @@ export default function TestController($rootScope,$scope,
 		return isLastCategory?'Finish Test':'Next';
 	};
 
+	$scope.getNumCategoriesLeft = function(){
+		if(!$scope.category) return 0;
+		var index = $scope.category.allCategories.indexOf($scope.category.name);
+		return  $scope.category.allCategories.length  - 1 - index;
+	};
 	function updateQuestionProgress(){
 		var numDone = 0;
 		var numTotal = 0;

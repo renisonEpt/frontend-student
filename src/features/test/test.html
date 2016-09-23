@@ -1,23 +1,8 @@
-<!--Note that another template called video-display is available, will be refactored into that in the future-->
-<!--
 <style>
-    .video-container{
-        height:400px;
-        width:100%;
-        text-align: center;
-    }
-    .video-display{
-        width:100%;
-        height:100%;
-    }
-    .video-display video{
-        margin:0 auto;
+    .test-content{
+        font-size: 20px !important;
     }
 </style>
-<div class="row video-container" ng-show="hasVideo()">
-    &lt;!&ndash;Src will be dynamic in the future&ndash;&gt;
-    <video src="media/primo.mp4" class="video-display" controls autostart="false"></video>
-</div>-->
 <div class="test-page" ng-controller="TestController" ng-show="loaded">
     <div class="timer-bar">
         <div class="row">
@@ -27,9 +12,10 @@
                 <h3>
                     <i class="fa fa-clock-o"></i>
                     <timer countdown="timeLeft" interval="1000" finish-callback="onTimerFinished()" autostart="false"> {{hhours}}:{{mminutes}}:{{sseconds}}</timer>
-                    Left for {{category.name}} &nbsp &nbsp
-                    <small>{{questionProgress.numDone}}/{{questionProgress.numTotal+''}} Done</small>
+                    {{category.name}} &nbsp &nbsp
+                    
                 </h3>
+                <p>{{questionProgress.numDone}}/{{questionProgress.numTotal+''}} finished</p>
             </div>
             <div class="col-xs-2">
                 <button class="btn btn-lg" ng-click="next()"><span
@@ -39,18 +25,19 @@
             </div>
         </div>
         <div class="row text-center">
-            <label class="progress-label">Progress: </label>
+            <p>  {{getNumCategoriesLeft()==1?'1 category':getNumCategoriesLeft()+' categories'}}  left</p>
+            <!-- <label class="progress-label">Progress: </label>
             <ul class="list-unstyled category-progress">
                 <li ng-repeat="cateName in category.allCategories" class="progress-item" ng-class="{'active':cateName==category.name}">
                     {{cateName}}
                 </li>
-            </ul>
+            </ul> -->
         </div>
     </div>
 <div class="container">
     <div class="row test-content" id="top">
         <div class="col-sm-10 col-sm-offset-1">
-            <ept-test-component ng-repeat="component in category.testComponents | orderBy:'ordering'" component="component" component-num="component.questionIndex" on-response-changed="saveResponse(component)">
+            <ept-test-component  ng-repeat="component in category.testComponents | orderBy:'ordering'" component="component" component-num="component.questionIndex" on-response-changed="saveResponse(component)">
             </ept-test-component>
     
             <div ng-show="isLastPage()" class="text-center">

@@ -1,9 +1,24 @@
 import 'angular-local-storage';
 require('./login.less');
+
+/*========================================
+=            Login Controller            =
+========================================*/
+/**
+ *
+ * First asks user to fill out an info form 
+ * then, moves the user to `LoginAttempt` Stage, when we 
+ * constantly ask the server for logging in (test might not have start yet)
+ * we repeatedly ask until instructor activates a test
+ *
+ */
+
+
+
 LoginController.$inject  = ['$rootScope','$scope',
     '$stateParams', '$state','$q','localStorageService',
     'BaseService','$cookies','BaseModalService','BaseToastService','$interval'];
-var LOGIN_ATTEMPT_INTERVAL = 5000; // send login attempt every 5 seconds
+var LOGIN_ATTEMPT_INTERVAL = 15000; // send login attempt every 15 seconds
 export default function LoginController($rootScope,$scope, 
     $stateParams,$state,$q,localStorageService,
     BaseService,$cookies,BaseModalService,BaseToastService,$interval) {
@@ -38,6 +53,11 @@ export default function LoginController($rootScope,$scope,
             loginPolling = null;
         }
     }
+
+    function getDiffDate(d1,d2){
+        var timeDiff = d2.getTime()-d1.getTime();
+        return timeDiff;
+    }
     // first, we put user into login-staging, where we repeatedly
     // send request to server and ask for login
     // if the server says test has not started yet, we continue to try
@@ -46,6 +66,11 @@ export default function LoginController($rootScope,$scope,
     // activates the test
     $scope.login = function(user){
         user = user || $scope.user;
+        var timeDiffInYears = Math.ceil(getDiffDate(user.dateOfBirth,new Date())/(1000*3600*24*365));
+        if(timeDiffInYears>40 || timeDiffInYears < 10){
+            BaseModalService.errorAlert('<p>Please double check your date of birth. Are you really that old or young?</p>');
+            return;
+        }
         $scope.loginStaging = true;
         loginPolling = $interval(function(){
             startTest(user).then(function(data){ 
