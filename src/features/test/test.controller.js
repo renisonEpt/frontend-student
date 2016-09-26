@@ -187,6 +187,8 @@ export default function TestController($rootScope,$scope,
 				.then(function(confirmResult){
 					if(confirmResult) displayNextCategory();
 				});
+		}else{
+			displayNextCategory();
 		}
 	}
 	$scope.isLastCategory = function(){
