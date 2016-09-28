@@ -17,11 +17,11 @@ require('./login.less');
 
 LoginController.$inject  = ['$rootScope','$scope',
     '$stateParams', '$state','$q','localStorageService',
-    'BaseService','$cookies','BaseModalService','BaseToastService','$interval'];
+    'BaseService','$cookies','BaseModalService','BaseToastService','$interval','$document'];
 var LOGIN_ATTEMPT_INTERVAL = 15000; // send login attempt every 15 seconds
 export default function LoginController($rootScope,$scope, 
     $stateParams,$state,$q,localStorageService,
-    BaseService,$cookies,BaseModalService,BaseToastService,$interval) {
+    BaseService,$cookies,BaseModalService,BaseToastService,$interval,$document) {
 
     $scope.user = {
         firstName:'',
@@ -68,10 +68,17 @@ export default function LoginController($rootScope,$scope,
         user = user || $scope.user;
         var timeDiffInYears = Math.ceil(getDiffDate(user.dateOfBirth,new Date())/(1000*3600*24*365));
         if(timeDiffInYears>40 || timeDiffInYears < 10){
-            BaseModalService.errorAlert('<p>Please double check your date of birth. Are you really that old or young?</p>');
+            BaseModalService
+                .errorAlert('<p>Please double check your date of birth. Are you really that old or young?</p>')
+                .then(function(){
+                    // hack to resolve modal backdrop not being removed
+                    $document.find('.modal').remove();
+                    $document.find('.modal-backdrop').remove();
+                });
             return;
         }
         $scope.loginStaging = true;
+        window.scrollTo(0,0);
         loginPolling = $interval(function(){
             startTest(user).then(function(data){ 
                 console.log('service trying to login, below is the data got from server');

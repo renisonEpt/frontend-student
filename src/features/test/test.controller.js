@@ -10,7 +10,7 @@ var ErrorCodes = {
 
 TestController.$inject  = ['$rootScope','$scope',
 	'$stateParams', '$state','$q','localStorageService',
-	'BaseService','$cookies','BaseToastService','BaseModalService'];
+	'BaseService','$cookies','BaseToastService','BaseModalService','$timeout','$document'];
 
 class Timer{
 	constructor($scope){
@@ -41,7 +41,7 @@ class Timer{
 
 export default function TestController($rootScope,$scope, 
 	$stateParams,$state,$q,localStorageService,
-	BaseService,$cookies,BaseToastService,BaseModalService) {
+	BaseService,$cookies,BaseToastService,BaseModalService,$timeout,$document) {
 	var timer = new Timer($scope);
 	var warningReminderTime = 10; // warn on 10min left
 	var endingReminderTime = 1; // warn the ending on 1 min left
@@ -185,7 +185,11 @@ export default function TestController($rootScope,$scope,
 			};
 			BaseModalService.confirm(modalOptions)
 				.then(function(confirmResult){
-					if(confirmResult) displayNextCategory();
+					$document.find('.modal').remove();
+					$document.find('.modal-backdrop').remove();
+					if(!confirmResult) return;
+					// hack to resolve modal backdrop not being removed
+					displayNextCategory();
 				});
 		}else{
 			displayNextCategory();

@@ -1,17 +1,20 @@
 <div ng-controller="LoginController">
     <div ng-show="loginStaging" class="login-staging">
         <ept-loading-bar class="'color-white'"></ept-loading-bar>
+        <br>
+        <br>
+        <br>
         <h3 class="explanation title">One moment, your instructor is setting up the exam.</h3>
         <p class="explanation detail">You entered something wrong in your login form? You can <a ng-click='resetLogin()'>go back</a></p>
     </div>
     <div ng-show = "!loginStaging" class="container">
-        <h1 align="center" class="title">UW English Proficiency Test</h1>
+        <h1 align="center" class="title">Renison English Placement Test</h1>
         <p align="center"> To start, please fill out the information</p>
         <div class="row">
             <div class="span12">
                 <form ng-submit="login()" class="form-horizontal ept-login" role="form">
                     <div class="form-group">
-                        <label class="col-sm-5 control-label">First Name </label>
+                        <label class="col-sm-5 control-label">Given Name</label>
                         <div class="col-sm-3">
                             <input type="text" ng-model="user.firstName" required class="form-control"
                                    placeholder="e.g. Thomas">
@@ -19,7 +22,7 @@
                     </div>
         
                     <div class="form-group">
-                        <label class="col-sm-5 control-label">Last Name </label>
+                        <label class="col-sm-5 control-label">Family Name</label>
         
                         <div class="col-sm-3">
                             <input type="text" ng-model="user.lastName" required class="form-control"
