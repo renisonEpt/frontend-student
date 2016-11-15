@@ -28,4 +28,11 @@
  ✔ show total number of questions and completed @done (16-06-21 21:07)
  ✔ question list on the side @done (16-09-03 10:43)
  ✔ category progress indication @done (16-09-03 10:43)
- ☐ synchronization of time
+ ✔ synchronization of time @done (16-11-05 11:33)
+ 
+ Implementing Instruction:
+   Just disable the next button, and wait for automatic shift to the next category
+   ☐ Pinch
+   ☐ Don't close browser
+   ☐ Answer is automatically saved
+   ☐ 

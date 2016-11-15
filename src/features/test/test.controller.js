@@ -10,7 +10,8 @@ var ErrorCodes = {
 
 TestController.$inject  = ['$rootScope','$scope',
 	'$stateParams', '$state','$q','localStorageService',
-	'BaseService','$cookies','BaseToastService','BaseModalService','$timeout','$document'];
+	'BaseService','$cookies','BaseToastService',
+	'BaseModalService','$timeout','$document','$interval'];
 
 class Timer{
 	constructor($scope){
@@ -41,11 +42,18 @@ class Timer{
 
 export default function TestController($rootScope,$scope, 
 	$stateParams,$state,$q,localStorageService,
-	BaseService,$cookies,BaseToastService,BaseModalService,$timeout,$document) {
+	BaseService,$cookies,BaseToastService,BaseModalService,
+	$timeout,$document,$interval) {
+	$scope.endLoading = function(){
+		$scope.$emit('loadingEnd');
+	};
+	$scope.startLoading = function(){
+		$scope.$emit('loadingStart');
+	};
 	var timer = new Timer($scope);
 	var warningReminderTime = 10; // warn on 10min left
 	var endingReminderTime = 1; // warn the ending on 1 min left
-	$scope.loaded = false;
+	$scope.startLoading();
 	$scope.timeLeft = 100;
 	$scope.questionProgress = {
 		numDone:0,
@@ -67,8 +75,19 @@ export default function TestController($rootScope,$scope,
 					timeOut:'15000' 
 				});
 		}
+		// constantly report status to admin
+		// only report in the middle of 10sec interval
+		// don't wanna report when timeLeft is close to 0, since we might have
+		// switched category by then
+		// WARNING, this does not work!
+		// I observed that request had upto 15secs delay, even 
+		// messing around with timer and statusReporter would be nightmare
+		// if (timeLeft % 5===0 && timeLeft%10 !== 0){
+		// 	reportStatusHandleResponse();
+		// }
 	});
-	// getting data
+	// getting data, note that BaseService behaves differently
+	// from services using ngResource
 	BaseService.get('/proctor/timer').then(function(timeLeft){
 		console.log(timeLeft);
 		if(timeLeft > 0){
@@ -87,7 +106,43 @@ export default function TestController($rootScope,$scope,
 		// if test hasn't started, go to next category
 		return displayNextCategory();
 	});
+	// reports current status, handle any action required from admin
+	function reportStatusHandleResponse(){
+		if($scope.catgory === null){// havn't fetched test yet
+			return;
+		}
+		BaseService.post('/proctor/statusReporter',{
+			categoryId:$scope.category.id,
+			timeRemaining: $scope.timeLeft
+		})
+		.then(function(response){
+			console.log(response);
+			var refreshNeeded = response.refreshNeeded;
+			if(refreshNeeded){
+				refreshCurrentCategory();
+				refreshTimer();
+				BaseToastService.warn('Admin may have updated your timing, or your '+
+					'test is out of sync, we are auto refreshing your test',{
+						timeOut:'15000' // how long message appears, in miliseconds
+					});
+			}
+		})
+		.catch(showErrorMsg);
+	}
+	function refreshTimer(){
+		return BaseService.get('/proctor/timer').then(function(timeLeft){
+			$scope.timeLeft = timeLeft;
+		});
+	}
+	function refreshCurrentCategory(){
+		return BaseService.get('/proctor/currentCategory')
+			.then(function(currentCategory){
+				displayTest(currentCategory);
+			})
+			.catch(showErrorMsg);
+	}
 	function displayNextCategory(){
+		$scope.startLoading();
 		return BaseService.post('/proctor/nextCategory')
 			.then(function(data){
 				if(!data){
@@ -117,7 +172,6 @@ export default function TestController($rootScope,$scope,
 		if(!testData.testComponents){
 			return;
 		}
-		$scope.loaded = true;
 		var questionIndex = 1;
 		// todo refactor to the backend
 		testData.testComponents = _.sortBy(testData.testComponents,'ordering');
@@ -139,6 +193,7 @@ export default function TestController($rootScope,$scope,
 		updateQuestionProgress();
 		timer.start($scope.timeLeft);
 		scrollToTop();
+		$scope.endLoading();
 	}
 
 	// determines from a response object whether a test is submitted
@@ -178,6 +233,26 @@ export default function TestController($rootScope,$scope,
 
 	$scope.next = function(ignoreConfirm){
 		if(!ignoreConfirm){
+			// if it is instruction category, do not allow next category
+			if (/instruction/i.test($scope.category.name)){
+				var confirmMessage = getUnansweredWarning() + ' When you leave this section, you will not be able to return. \n' + 
+				'Select OK to continue to the next section. Select Cancel to stay in this section. \n'+ 
+				'Since this is an instruction category, you will <em> wait until the time ends </em>'+ 
+				'to move on to actual test';
+				var modalOptions = {
+					modalTitle: 'Moving on...',
+					modalBody: '<p>'+confirmMessage+'</p>'
+				};
+				BaseModalService.confirm(modalOptions)
+					.then(function(confirmResult){
+						// hack to resolve modal backdrop not being removed
+	                    $document.find('.modal').remove();
+	                    $document.find('.modal-backdrop').remove();
+	                    $document.find('body').removeClass('modal-open');
+						if(!confirmResult) return;
+				});
+				return;
+			}
 			var confirmMessage = getUnansweredWarning() + ' When you leave this section, you will not be able to return. \nSelect OK to continue to the next section. Select Cancel to stay in this section.';
 			var modalOptions = {
 				modalTitle: 'Moving on...',
@@ -187,10 +262,11 @@ export default function TestController($rootScope,$scope,
 				.then(function(confirmResult){
 					$document.find('.modal').remove();
 					$document.find('.modal-backdrop').remove();
+					$document.find('body').removeClass('modal-open');
 					if(!confirmResult) return;
 					// hack to resolve modal backdrop not being removed
 					displayNextCategory();
-				});
+			});
 		}else{
 			displayNextCategory();
 		}
@@ -210,6 +286,7 @@ export default function TestController($rootScope,$scope,
 		var index = $scope.category.allCategories.indexOf($scope.category.name);
 		return  $scope.category.allCategories.length  - 1 - index;
 	};
+
 	function updateQuestionProgress(){
 		var numDone = 0;
 		var numTotal = 0;

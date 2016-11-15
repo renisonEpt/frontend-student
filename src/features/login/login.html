@@ -1,6 +1,6 @@
 <div ng-controller="LoginController">
     <div ng-show="loginStaging" class="login-staging">
-        <ept-loading-bar class="'color-white'"></ept-loading-bar>
+        <ept-loading-bar class="'color-white'" type="'bowl'" is-loading="true"></ept-loading-bar>
         <br>
         <br>
         <br>
@@ -151,7 +151,6 @@
                         <div style="text-align: center" class="col-sm-12">
                             <button type="submit" ng-disabled="!loaded" class="btn btn-success" value="login">Submit</button>
                             <!-- <button type="button"  class="btn btn-danger" ng-click="expressLogin()">DEBUG LOGIN</button> -->
-                            <!-- <button type="button" ng-disabled="!loaded" class="btn btn-warning" ng-click="recoverTest()">Recover Test</button> -->
                         </div>
                     </div>
                     <!--<span>Please use either submit or debug login to test this project.

@@ -74,6 +74,7 @@ export default function LoginController($rootScope,$scope,
                     // hack to resolve modal backdrop not being removed
                     $document.find('.modal').remove();
                     $document.find('.modal-backdrop').remove();
+                    $document.find('body').removeClass('modal-open');
                 });
             return;
         }
@@ -98,6 +99,6 @@ export default function LoginController($rootScope,$scope,
         $scope.loaded=true;
     };
     $scope.expressLogin=function(){
-        $scope.login({'firstName':'asdfads','lastName':'test ','studentId':123,'dateOfBirth':'2003-03-12','gender':'MALE','email':'1231231@ccc.com','university':'University of Hong Kong','currentMajor':'hello','UWMajor':'','faculty':'','password':'1234'});
+        $scope.login({'firstName':'asdfads','lastName':'test ','studentId':123,'dateOfBirth':new Date(1996,1,1),'gender':'MALE','email':'1231231@ccc.com','university':'University of Hong Kong','currentMajor':'hello','UWMajor':'','faculty':'','password':'1234'});
     };
 }
