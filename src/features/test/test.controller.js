@@ -233,26 +233,6 @@ export default function TestController($rootScope,$scope,
 
 	$scope.next = function(ignoreConfirm){
 		if(!ignoreConfirm){
-			// if it is instruction category, do not allow next category
-			if (/instruction/i.test($scope.category.name)){
-				var confirmMessage = getUnansweredWarning() + ' When you leave this section, you will not be able to return. \n' + 
-				'Select OK to continue to the next section. Select Cancel to stay in this section. \n'+ 
-				'Since this is an instruction category, you will <em> wait until the time ends </em>'+ 
-				'to move on to actual test';
-				var modalOptions = {
-					modalTitle: 'Moving on...',
-					modalBody: '<p>'+confirmMessage+'</p>'
-				};
-				BaseModalService.confirm(modalOptions)
-					.then(function(confirmResult){
-						// hack to resolve modal backdrop not being removed
-	                    $document.find('.modal').remove();
-	                    $document.find('.modal-backdrop').remove();
-	                    $document.find('body').removeClass('modal-open');
-						if(!confirmResult) return;
-				});
-				return;
-			}
 			var confirmMessage = getUnansweredWarning() + ' When you leave this section, you will not be able to return. \nSelect OK to continue to the next section. Select Cancel to stay in this section.';
 			var modalOptions = {
 				modalTitle: 'Moving on...',

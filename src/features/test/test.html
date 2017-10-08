@@ -17,12 +17,7 @@
                 </h3>
                 <p>{{questionProgress.numDone}}/{{questionProgress.numTotal+''}} finished</p>
             </div>
-            <div class="col-xs-2">
-                <button class="btn btn-lg" ng-click="next()"><span
-                        class="fa fa-chevron-right"></span>
-                        {{getNextButtonText()}} &nbsp; &nbsp;
-                </button>
-            </div>
+            
         </div>
         <div class="row text-center">
             <p>  {{getNumCategoriesLeft()==1?'1 category':getNumCategoriesLeft()+' categories'}}  left</p>
@@ -50,6 +45,17 @@
              <span>{{message}}</span>
         </div>
     
+    </div>
+    <div class="row">
+        <div class="text-center">
+                <button class="btn btn-lg" ng-click="next()"><span
+                        class="fa fa-chevron-right"></span>
+                        {{getNextButtonText()}} &nbsp; &nbsp;
+                </button>
+        </div>
+        <br>
+        <br>
+        <br>
     </div>
 </div>
 </div>

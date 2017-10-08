@@ -35,4 +35,59 @@
    ☐ Pinch
    ☐ Don't close browser
    ☐ Answer is automatically saved
-   ☐ 
+
+TODOs:
+  ✔ Remove GAOKAO overall score @done (16-11-15 14:14)
+  ✔ Staging text: If you want to review your login form, you can go back. @done (16-11-15 14:14)
+  ✔ please do not tap any of the above. (delete the 'unless') @done (16-11-15 14:20)
+  ✔ please zoom out and find the next button on the top right @done (16-11-15 14:19)
+    - I should move next button to bottom
+  ✔ instead of the True False question, say "Question 2".  @done (16-11-15 14:19)
+    - this is removed 
+  ✔ Select true for question 2,  @done (16-11-15 14:19)
+    - this is removed
+  ✔ Insert a waiting category for staging @done (16-11-15 15:05)
+  ✔ make instruction part 10 mins @done (16-11-15 14:19)
+  ✔ when you understand the instructions, press next, click OK. @done (16-11-15 14:19)
+  ✔ STOP, do not tap any key until instructed to do so.  @done (16-11-15 14:22)
+  ✔ remove stopping the next button on instruction category, make **any changes regarding the instructions** @done (16-11-15 14:22)
+  ✔ put the next button at the bottom of the screen @done (16-11-15 14:27)
+  ✔ disable pull to scroll @done (16-11-15 15:05)
+  ☐ tape the menu button on android
+
+
+  ☐ capitalize first letter in name in excel @low
+  ☐ reorganize excel exporting to default reverse chronological order @high
+  ☐ fix admin question numbering @low
+  ☐ pull down list for date and year @low
+  ☐ Remove the green dot on the left of each test name
+  ☐ feature: put an option for each category to enable or disable early exiting next category @reallylow 
+  ☐ remove the "saved icon" (don't give extra information to user) @high
+  ☐ in the instruction, say that all questions are saved automatically
+  ☐ UI improvement for double clicking vs single clicking for question
+  ☐ Make question editting HTML based, so that words can be bolded
+  ☐ modal pop up rather than toast message @high
+  ☐ Timing difference between tablet and admin, Ron discovered tablet saying 4min remaining, Admin says zero.
+  ☐ Field `Other` for university
+  ☐ another sheet that contains each question, and the number of students that get right, out of a total.
+  ☐ 
+
+=============
+  ☐ in instruction, tell students to use rotate screen
+  ☐ in instruction, tell admin to ask student to refresh page
+=============
+
+
+  ☐ in the handout to admin, tell very clearly that swipe to the right of the screen and find "test recovery" @low (if implementing the automatic test, then this is not necessary)
+  ☐ Change security question to what is your father's name @high
+  ☐ Security measure: change so that student are not allowed to log in for the full duration (or at least 90%) of the test, use cookie to memorize the information @low
+  ☐ also, if student goes to the initial screen again, and if they have a cookie set, they would continue the test @high
+  ☐ seeing someone leaving the test @low
+  ☐ another tablet field in the login information @low
+
+  Inputting the test: 
+    ☐ change pronunciation and listening to Listening and comprehension 
+    ☐ at the bototm of the test, change from "end of pronunciation" to "end of listening"
+    ☐ disable the video in sample test
+    ☐ break listening section to 2 parts, 10 minutes each, (5 min to review, 2-3 for video)
+    ☐ Reading 1: need a space in "questionthat" follow
